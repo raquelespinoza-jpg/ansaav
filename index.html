@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Store</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #b85450 0%, #a94442 25%, #8b3a3a 50%, #7a2e2e 75%, #692323 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Elementos de fondo animados */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float1 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -15%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float2 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            animation: floatRandom 10s linear infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+            animation-duration: 12s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+            animation-duration: 15s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+            animation-duration: 10s;
+        }
+
+        .store-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .store-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(255,255,255,0.05), transparent);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        /* Header de bienvenida */
+        .welcome-header {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .welcome-text {
+            font-size: 28px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .store-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* Imagen del producto */
+        .product-showcase {
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .product-frame {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 0 auto 40px;
+            width: 200px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .product-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8b3a3a, #a94442);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-icon {
+            font-size: 40px;
+            color: rgba(255,255,255,0.8);
+            z-index: 2;
+        }
+
+        .product-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            background: #d32f2f;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.6);
+        }
+
+        .mountain-shape {
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 50%;
+            background: linear-gradient(45deg, #7a2e2e, #8b3a3a);
+            clip-path: polygon(0% 100%, 30% 20%, 60% 40%, 100% 0%, 100% 100%);
+        }
+
+        /* Botón Shop */
+        .shop-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 18px 40px;
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            width: 100%;
+        }
+
+        .shop-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .shop-button:hover::before {
+            left: 100%;
+        }
+
+        .shop-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .shop-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Botón Home */
+        .home-section {
+            position: relative;
+        }
+
+        .home-button {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transition: transform 0.4s ease;
+        }
+
+        .home-button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .home-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .home-icon {
+            font-size: 28px;
+            color: rgba(255,255,255,0.9);
+            z-index: 2;
+        }
+
+        /* Barra inferior decorativa */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 30px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* Animaciones */
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            50% { transform: translateX(-30px) rotate(-180deg); }
+        }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(10px) translateX(-15px); }
+            75% { transform: translateY(-10px) translateX(5px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .store-container {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .welcome-text {
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .product-frame {
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .shop-button {
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .home-button {
+            animation: fadeInUp 1.8s ease-out;
+        }
+
+        /* Responsividad */
+        @media (max-width: 480px) {
+            .store-container {
+                padding: 40px 30px;
+                border-radius: 25px;
+            }
+
+            .welcome-text {
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+
+            .product-frame {
+                width: 180px;
+                height: 120px;
+                padding: 25px;
+            }
+
+            .shop-button {
+                padding: 15px 35px;
+                font-size: 16px;
+            }
+
+            .home-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .home-icon {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .store-container {
+                padding: 35px 25px;
+            }
+
+            .welcome-text {
+                font-size: 20px;
+            }
+
+            .product-frame {
+                width: 160px;
+                height: 110px;
+                padding: 20px;
+            }
+        }
+
+        /* Efectos de partículas */
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 8s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Elementos flotantes de fondo -->
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="store-container">
+        <!-- Header de bienvenida -->
+        <div class="welcome-header">
+            <h1 class="welcome-text">Welcome To<br>My Store</h1>
+            <p class="store-subtitle">Discover Amazing Products</p>
+        </div>
+
+        <!-- Showcase del producto -->
+        <div class="product-showcase">
+            <div class="product-frame">
+                <div class="product-image">
+                    <div class="mountain-shape"></div>
+                    <i class="fas fa-image product-icon"></i>
+                    <div class="product-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón Shop -->
+        <button class="shop-button" onclick="handleShopClick()">
+            <i class="fas fa-shopping-bag" style="margin-right: 10px;"></i>
+            Shop
+        </button>
+
+        <!-- Botón Home -->
+        <div class="home-section">
+            <button class="home-button" onclick="handleHomeClick()">
+                <i class="fas fa-home home-icon"></i>
+            </button>
+        </div>
+
+        <!-- Barra inferior decorativa -->
+        <div class="bottom-bar"></div>
+    </div>
+
+    <script>
+        // Funciones de interacción
+        function handleShopClick() {
+            const button = document.querySelector('.shop-button');
+            button.style.transform = 'translateY(-1px) scale(0.98)';
+            
+            // Efecto de ondas
+            createRippleEffect(button, event);
+            
+            setTimeout(() => {
+                button.style.transform = 'translateY(-3px)';
+            }, 200);
+
+            console.log('Navegando a la tienda...');
+            // window.location.href = '/shop';
+        }
+
+        function handleHomeClick() {
+            const button = document.querySelector('.home-button');
+            button.style.transform = 'translateY(-3px) scale(0.95) rotate(360deg)';
+            
+            setTimeout(() => {
+                button.style.transform = 'translateY(-5px) scale(1.05)';
+            }, 300);
+
+            console.log('Navegando al home...');
+            // window.location.href = '/home';
+        }
+
+        // Efecto de ondas en botones
+        function createRippleEffect(element, event) {
+            const ripple = document.createElement('span');
+            const rect = element.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.background = 'rgba(255,255,255,0.3)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.pointerEvents = 'none';
+            
+            element.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Crear partículas flotantes
+        function createParticles() {
+            const particleCount = 6;
+            
+            setInterval(() => {
+                if (document.querySelectorAll('.particle').length < particleCount) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+                    particle.style.animationDuration = Math.random() * 3 + 5 + 's';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 8000);
+                }
+            }, 1500);
+        }
+
+        // Efecto de paralaje en movimiento del mouse
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            document.querySelector('.store-container').style.transform = 
+                `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // CSS adicional para el efecto ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Inicializar efectos
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Animación de entrada escalonada
+            const elements = ['.welcome-text', '.product-frame', '.shop-button', '.home-button'];
+            elements.forEach((selector, index) => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.style.animationDelay = (index * 0.2) + 's';
+                }
+            });
+        });
+
+        // Efecto hover mejorado para el showcase
+        const productFrame = document.querySelector('.product-frame');
+        productFrame.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05) rotateY(10deg)';
+        });
+
+        productFrame.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1) rotateY(0deg)';
+        });
+    </script>
+</body>
+</html>
